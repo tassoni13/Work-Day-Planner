@@ -14,10 +14,12 @@ var currentDay = document.querySelector("#currentDay")
 
 currentDay.textContent = moment().format("dddd, MMMM Do YYYY");
 
-//Color codes each block based on if it is in the past, present, or future
+//Color codes each block based on if it is past, present, or future
 
 function blockColor() {
+
     var hour = time.hours();
+
     $(".time-block").each(function (){
         var thisHour = parseInt($(this).attr("id"));
 
@@ -35,3 +37,29 @@ function blockColor() {
 }
 
 blockColor();
+
+//Creates function to save timeblock input (events)
+
+function saveEvent() {
+
+    $(".time-block").each(function(){
+        var id = $(this).attr("id");
+        var schedule = localStorage.getItem(id);
+
+        if (schedule !==null) {
+            $(this).children(".schedule").val(schedule);
+        }
+    });
+}
+
+saveEvent();
+
+//Adds event listener to "SAVE" button to run the save event function
+var saveBtn = $(".saveBtn");
+
+saveBtn.on("click", function(){
+    var time = $(this).parent().attr("id");
+    var schedule = $(this).siblings(".schedule").val();
+
+    localStorage.setItem(time, schedule);
+});
